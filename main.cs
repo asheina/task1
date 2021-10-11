@@ -6,8 +6,15 @@ namespace Task1
     {
         static void Main(string[] args)
         {
-            V1DataList arr = new V1DataList("array", System.DateTime.Now);
-            Console.WriteLine("test");
+            V1DataArray testArray = new V1DataArray("test", System.DateTime.Now, 2, 1, 1.5, 1.0, Fdbl.TestComplexF);
+            Console.WriteLine(testArray.ToLongString("{0:f2}"));
+            Console.WriteLine("Count: " + testArray.Count);
+            Console.WriteLine("Avg: " + testArray.AverageValue);
+
+            var testList = testArray.ToV1DataList();
+            Console.WriteLine(testList.ToLongString("{0:f2}"));
+            Console.WriteLine("Count: " + testList.Count);
+            Console.WriteLine("Avg: " + testList.AverageValue);
         }
     }
 }

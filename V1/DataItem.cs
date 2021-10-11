@@ -16,14 +16,14 @@ public struct DataItem
         string res = "(x, y) : (" + String.Format(format, x) + ", " +
                 String.Format(format, y) +
                 ")\n";
-        res += "value = " + value.ToString() +
-                " |value| = " + System.Numerics.Complex.Abs(value) +
+        res += "value = " + String.Format(format, value.ToString()) +
+                " |value| = " + String.Format(format, System.Numerics.Complex.Abs(value)) +
                 "\n";
         return res;
     }
 
     public override string ToString()
     {
-        return value.ToString();
+        return value.ToString() + "\n";
     }
 }
