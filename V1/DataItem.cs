@@ -16,7 +16,8 @@ public struct DataItem
         string res = "(x, y) : (" + String.Format(format, x) + ", " +
                 String.Format(format, y) +
                 ")\n";
-        res += "value = " + String.Format(format, value.ToString()) +
+        res += "value = " + String.Format(format, value.Real) + " + i*" +
+                    String.Format(format, value.Imaginary) +
                 " |value| = " + String.Format(format, System.Numerics.Complex.Abs(value)) +
                 "\n";
         return res;

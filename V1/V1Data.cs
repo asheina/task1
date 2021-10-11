@@ -57,7 +57,7 @@ public class V1DataList : V1Data
         return points;
     }
 
-    int AddDefaults(int nitems, FdblComplex F)
+    public int AddDefaults(int nitems, FdblComplex F)
     {
         int countn = 0;
         var points = getPoints(nitems);
@@ -149,7 +149,8 @@ public class V1DataArray : V1Data
                 res += "(x, y) : (" + String.Format(format, i * stepX) + ", " +
                    String.Format(format, j * stepY) +
                    ")\n";
-                res += "value = " + String.Format(format, matrix[i, j].ToString()) +
+                res += "value = " + String.Format(format, matrix[i, j].Real) + "+ i*" +
+                    String.Format(format, matrix[i, j].Imaginary) + 
                     " |value| = " + String.Format(format, System.Numerics.Complex.Abs(matrix[i, j])) +
                     "\n";
             }
