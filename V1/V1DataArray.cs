@@ -1,6 +1,9 @@
 using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 public class V1DataArray : V1Data
 {
@@ -92,13 +95,47 @@ public class V1DataArray : V1Data
     }
 
 
-    // static bool SaveAsText(string filename) //экземплярный должен быть
-    // {
+    public static bool SaveAsText(string filename, V1DataArray v1)
+    {
+        FileStream file = null;
+        StreamWriter writer = null;
+        var input = JsonSerializer.Serialize(v1);
+        try
+        {
+            file = new FileStream(filename, FileMode.OpenOrCreate);
+            writer = new StreamWriter(file);
+            writer.Write(input);
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+        finally
+        {
+            writer.Close();
+            file.Close();
+        }
+        return true;
+    }
 
-    // }
-
-    // bool LoadAsText(string filename, ref V1DataArray v1) //too
-    // {
-
-    // }
+    bool LoadAsText(string filename, ref V1DataArray v1)
+    {
+        FileStream file = null;
+        byte[] buffer = null;
+        try
+        {
+            file = new FileStream(filename, FileMode.Open);
+            file.Read(buffer);
+            v1 = JsonSerializer.Deserialize<V1DataArray>(buffer);
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+        finally
+        {
+            file.Close();
+        }
+        return true;
+    }
 }

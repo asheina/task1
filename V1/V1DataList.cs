@@ -1,6 +1,7 @@
 using System;
-using System.Collections;
+using System.IO;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class V1DataList : V1Data
 {
@@ -82,14 +83,44 @@ public class V1DataList : V1Data
         return this.list.GetEnumerator();
     }
 
-    // bool SaveBinary(string filename)
-    // {
+    public static bool SaveBinary(string filename, ref V1DataList v1)
+    {
+        FileStream file = null;
+        var input = new BinaryFormatter();
+        try
+        {
+            file = new FileStream(filename, FileMode.OpenOrCreate);
+            input.Serialize(file, v1);
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+        finally
+        {
+            file.Close();
+        }
+        return true;
+    }
 
-    // }
-
-    // bool LoadBinary(string filename, ref V1DataList v1)
-    // {
-
-    // }
+    public static bool LoadBinary(string filename, ref V1DataList v1)
+    {
+        FileStream file = null;
+        var output = new BinaryFormatter();
+        try
+        {
+            file = new FileStream(filename, FileMode.Open);
+            v1 = (V1DataList)output.Deserialize(file);
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+        finally
+        {
+            file.Close();
+        }
+        return true;
+    }
 }
 
