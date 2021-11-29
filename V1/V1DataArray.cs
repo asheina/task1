@@ -92,13 +92,13 @@ public class V1DataArray : V1Data
     }
 
 
-    static bool SaveAsText(string filename) //экземплярный должен быть
-    {
+    // static bool SaveAsText(string filename) //экземплярный должен быть
+    // {
 
-    }
+    // }
 
-    bool LoadAsText(string filename, ref V1DataArray v1) //too
-    {
+    // bool LoadAsText(string filename, ref V1DataArray v1) //too
+    // {
 
-    }
+    // }
 }

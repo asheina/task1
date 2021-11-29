@@ -56,40 +56,50 @@ public class V1MainCollection : IEnumerable<V1DataList>, IEnumerable<V1Data>
 
     IEnumerator<V1DataList> IEnumerable<V1DataList>.GetEnumerator()
     {
-        var list = new List<V1Data>();
-        foreach (var data in this._values)
-        {
-            if (data is V1DataList)
-            {
-                list.Add(data);
-            }
-        }
-        if (list.Count == 0)
-        {
-            yield return null;
-        }
-        list.Sort(delegate (V1Data x, V1Data y)
-        {
-            if (x.Count == 0 && y.Count == 0) return 0;
-            else if (x.Count == 0) return -1;
-            else if (y.Count == 0) return 1;
-            else return x.AverageValue.CompareTo(y.AverageValue);
-        });
+        var query = this._values.Select(item => item as V1DataList).
+                                Where(i => i != null).
+                                OrderBy(item => item.AverageValue);
 
-        foreach (var data in this._values)
-        {
-            yield return (V1DataList)data;
-        }
+        return query.GetEnumerator();
+        // var list = new List<V1Data>();
+        // foreach (var data in this._values)
+        // {
+        //     if (data is V1DataList)
+        //     {
+        //         list.Add(data);
+        //     }
+        // }
+        // if (list.Count == 0)
+        // {
+        //     yield return null;
+        // }
+        // list.Sort(delegate (V1Data x, V1Data y)
+        // {
+        //     if (x.Count == 0 && y.Count == 0) return 0;
+        //     else if (x.Count == 0) return -1;
+        //     else if (y.Count == 0) return 1;
+        //     else return x.AverageValue.CompareTo(y.AverageValue);
+        // });
+
+        // foreach (var data in list)
+        // {
+        //     yield return data as V1DataList;
+        // }
     }
 
     IEnumerator<V1Data> IEnumerable<V1Data>.GetEnumerator()
     {
-        var maxValue = this._values.Max(data => data.Count);
-        foreach (var data in this._values)
-        {
-            if (data.Count == maxValue)
-                yield return data;
-        }
+        var query = this._values.Where(
+                    i => i != null
+                        && i.Count == (from vals in this._values select vals.Count).Max()
+                    );
+        return query.GetEnumerator();
+
+        // foreach (var data in this._values)
+        // {
+        //     if (data.Count == maxValue)
+        //         yield return data;
+        // }
     }
 
     IEnumerator IEnumerable.GetEnumerator()

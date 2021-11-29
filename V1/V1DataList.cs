@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 public class V1DataList : V1Data
@@ -60,7 +61,7 @@ public class V1DataList : V1Data
     {
         string res = "Collection Type: " + type + "\n" +
                     "Count: " + list.Count + "\n" +
-                    "Time: " + this.createdAt.ToLongTimeString();
+                    "Time: " + this.createdAt.ToLongTimeString() + "\n";
         foreach (DataItem item in list)
             res += item.ToString();
         return res;
@@ -76,24 +77,19 @@ public class V1DataList : V1Data
         return res;
     }
 
-    IEnumerator<DataItem> IEnumerable<DataItem>.GetEnumerator()
+    public override IEnumerator<DataItem> GetEnumerator()
     {
-        throw new NotImplementedException();
+        return this.list.GetEnumerator();
     }
 
-    public DataListEnumerator GetEnumerator()
-    {
-        return new DataListEnumerator();
-    }
+    // bool SaveBinary(string filename)
+    // {
 
-    bool SaveBinary(string filename)
-    {
+    // }
 
-    }
+    // bool LoadBinary(string filename, ref V1DataList v1)
+    // {
 
-    bool LoadBinary(string filename, ref V1DataList v1)
-    {
-
-    }
+    // }
 }
 
