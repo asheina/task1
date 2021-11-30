@@ -1,5 +1,6 @@
 using System;
 
+[Serializable]
 public struct DataItem
 {
     public double x { get; set; }

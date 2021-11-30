@@ -1,9 +1,7 @@
 using System;
 using System.IO;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 public class V1DataArray : V1Data
 {
@@ -108,6 +106,7 @@ public class V1DataArray : V1Data
         }
         catch (Exception e)
         {
+            Console.WriteLine($"handles exception in V1DataArray.SaveAsText: {e.Message}");
             return false;
         }
         finally
@@ -118,23 +117,19 @@ public class V1DataArray : V1Data
         return true;
     }
 
-    bool LoadAsText(string filename, ref V1DataArray v1)
+    public static bool LoadAsText(string filename, ref V1DataArray v1)
     {
-        FileStream file = null;
-        byte[] buffer = null;
+        byte[] buffer = new byte[256];
         try
         {
-            file = new FileStream(filename, FileMode.Open);
-            file.Read(buffer);
-            v1 = JsonSerializer.Deserialize<V1DataArray>(buffer);
+            string content = File.ReadAllText(filename);
+            Console.Write(content);
+            v1 = JsonSerializer.Deserialize<V1DataArray>(content);
         }
         catch (Exception e)
         {
+            Console.WriteLine($"handles exception in V1DataArray.LoadAsText: {e.Message}");
             return false;
-        }
-        finally
-        {
-            file.Close();
         }
         return true;
     }

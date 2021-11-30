@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 
+[Serializable]
 public class V1DataList : V1Data
 {
     public List<DataItem> list { get; }
@@ -83,7 +84,7 @@ public class V1DataList : V1Data
         return this.list.GetEnumerator();
     }
 
-    public static bool SaveBinary(string filename, ref V1DataList v1)
+    public static bool SaveBinary(string filename, V1DataList v1)
     {
         FileStream file = null;
         var input = new BinaryFormatter();
@@ -94,6 +95,7 @@ public class V1DataList : V1Data
         }
         catch (Exception e)
         {
+            Console.WriteLine($"handles exception in V1DataList.SaveBinary: {e.Message}");
             return false;
         }
         finally
@@ -114,6 +116,7 @@ public class V1DataList : V1Data
         }
         catch (Exception e)
         {
+            Console.WriteLine($"handles exception in V1DataList.LoadBinary: {e.Message}");
             return false;
         }
         finally

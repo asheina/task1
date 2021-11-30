@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+[Serializable]
 public abstract class V1Data : IEnumerable<DataItem>
 {
     public string type { get; protected set; }
