@@ -90,7 +90,7 @@ public class V1DataList : V1Data
         var input = new BinaryFormatter();
         try
         {
-            file = new FileStream(filename, FileMode.OpenOrCreate);
+            file = new FileStream(filename, FileMode.Open);
             input.Serialize(file, v1);
         }
         catch (Exception e)
@@ -111,7 +111,8 @@ public class V1DataList : V1Data
         var output = new BinaryFormatter();
         try
         {
-            file = new FileStream(filename, FileMode.Open);
+            file = new FileStream(filename, FileMode.Open, FileAccess.Read);
+
             v1 = (V1DataList)output.Deserialize(file);
         }
         catch (Exception e)
