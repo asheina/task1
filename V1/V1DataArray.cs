@@ -2,35 +2,52 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Numerics;
+using System.Text.Json.Serialization;
 
+[Serializable]
+public class Body
+{
+    public int nX { get; set; }
+
+    public int nY { get; set; }
+
+    public double stepX { get; set; }
+
+    public double stepY { get; set; }
+}
+
+[Serializable]
 public class V1DataArray : V1Data
 {
-    public int nX { get; private set; }
-    public int nY { get; private set; }
+    public int nX { get; set; }
+    public int nY { get; set; }
 
-    public double stepX { get; private set; }
-    public double stepY { get; private set; }
-    public System.Numerics.Complex[,] matrix { get; private set; }
+    public double stepX { get; set; }
+    public double stepY { get; set; }
+    public Complex[,] matrix { get; set; }
     public override int Count { get { return nX * nY; } }
     public override double AverageValue
     {
         get
         {
             double avg = 0;
-            foreach (System.Numerics.Complex item in matrix)
-                avg += System.Numerics.Complex.Abs(item);
+            foreach (Complex item in matrix)
+            {
+                avg += Complex.Abs(item);
+            }
 
             return avg / nX / nY;
         }
     }
 
-    public V1DataArray(string dataType, System.DateTime time) : base(dataType, time)
+    public V1DataArray(string dataType, DateTime time) : base(dataType, time)
     {
-        matrix = new System.Numerics.Complex[0, 0];
+        matrix = new Complex[0, 0];
     }
 
     public V1DataArray(string dataType,
-            System.DateTime time,
+            DateTime time,
             int x,
             int y,
             double sX,
@@ -41,7 +58,7 @@ public class V1DataArray : V1Data
         stepY = sY;
         nX = x;
         nY = y;
-        matrix = new System.Numerics.Complex[nX, nY];
+        matrix = new Complex[nX, nY];
 
         for (int i = 0; i < nX; i++)
             for (int j = 0; j < nY; j++)
@@ -95,36 +112,36 @@ public class V1DataArray : V1Data
 
     public static bool SaveAsText(string filename, V1DataArray v1)
     {
-        FileStream file = null;
-        StreamWriter writer = null;
-        var input = JsonSerializer.Serialize(v1);
+        var body = new Body
+        {
+            nX = v1.nX,
+            nY = v1.nY,
+            stepX = v1.stepX,
+            stepY = v1.stepY,
+        };
+        var input = JsonSerializer.Serialize(body);
         try
         {
-            file = new FileStream(filename, FileMode.OpenOrCreate);
-            writer = new StreamWriter(file);
-            writer.Write(input);
+            File.WriteAllText(filename, input);
         }
         catch (Exception e)
         {
             Console.WriteLine($"handles exception in V1DataArray.SaveAsText: {e.Message}");
             return false;
         }
-        finally
-        {
-            writer.Close();
-            file.Close();
-        }
         return true;
     }
 
     public static bool LoadAsText(string filename, ref V1DataArray v1)
     {
-        byte[] buffer = new byte[256];
         try
         {
-            string content = File.ReadAllText(filename);
-            Console.Write(content);
-            v1 = JsonSerializer.Deserialize<V1DataArray>(content);
+            var content = File.ReadAllText(filename);
+            var body = JsonSerializer.Deserialize<Body>(content);
+            v1.nX = body.nX;
+            v1.nY = body.nY;
+            v1.stepX = body.stepX;
+            v1.stepY = body.stepY;
         }
         catch (Exception e)
         {
