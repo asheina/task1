@@ -45,64 +45,71 @@ namespace Task1
             Console.WriteLine("Восстановленный список: ");
             Console.WriteLine(okLoad);
             Console.WriteLine(loadedTestList.ToLongString("{0:f2}"));
+
+            Console.ResetColor();
         }
+
+        static void TestLINQ()
+        {
+            const int testX = 2;
+            const int testY = 3;
+            const double testStepX = 0.3;
+            const double testStepY = 0.4;
+
+            var collection = new V1MainCollection();
+
+            V1DataArray loadedTestArray = new V1DataArray("", DateTime.Now);
+            var testArray = new V1DataArray("test_linq_1_arr", DateTime.Now, testX, testY, testStepX, testStepY, Fdbl.TestComplexF);
+            var testArrayToList = new V1DataArray("test_linq_1_list", DateTime.Now, testX, testY, testStepX, testStepY, Fdbl.TestComplexF);
+
+            var testList = testArrayToList.ToV1DataList();
+
+            Thread.Sleep(1000);
+
+            var testArray2 = new V1DataArray("test_linq_2_arr", DateTime.Now, testX - 1, testY - 1, testStepX, testStepY, Fdbl.TestComplexF);
+            var testArray2ToList = new V1DataArray("test_linq_2_list", DateTime.Now, testX - 1, testY - 1, testStepX, testStepY, Fdbl.TestComplexF);
+            var testList2 = testArray2ToList.ToV1DataList();
+
+            Thread.Sleep(1000);
+
+            var testArrayEmpty = new V1DataArray("test_linq_empty_arr", DateTime.Now);
+            var testListEmpty = new V1DataList("test_linq_empty_list", DateTime.Now);
+
+            collection.Add(testArray);
+            collection.Add(testList);
+            collection.Add(testArray2);
+            collection.Add(testList2);
+            collection.Add(testArrayEmpty);
+            collection.Add(testListEmpty);
+
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.WriteLine("Test MinTime");
+            Console.WriteLine(collection.minTime());
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Test IEnumerable<V1Data>");
+            foreach (var data in (IEnumerable<V1Data>)collection)
+            {
+                Console.WriteLine(data.ToString());
+            }
+
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("Test IEnumerable<V1DataList>");
+            foreach (var data in (IEnumerable<V1DataList>)collection)
+            {
+                Console.WriteLine(data.ToString());
+            }
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("All collection");
+            Console.WriteLine(collection.ToString());
+        }
+
         static void Main(string[] args)
         {
-            TestSaveAndLoad("test_arr.json", "test_list.dat");
-            // Console.WriteLine("------ 1.");
-            // V1DataArray testArray = new V1DataArray("test (array)", System.DateTime.Now, 2, 1, 1.5, 1.0, Fdbl.TestComplexF);
-            // Console.WriteLine(testArray.ToLongString("{0:f2}"));
-            // Console.WriteLine(String.Format("Count: {0:d}", testArray.Count));
-            // Console.WriteLine(String.Format("Avg: {0:f3}", testArray.AverageValue));
-
-            // Console.WriteLine("------");
-
-            // var testList = testArray.ToV1DataList();
-            // Console.WriteLine(testList.ToLongString("{0:f2}"));
-            // Console.WriteLine(String.Format("Count: {0:d}", testList.Count));
-            // Console.WriteLine(String.Format("Avg: {0:f3}", testList.AverageValue));
-
-            // // Thread.Sleep(2000);
-
-            // Console.WriteLine("------ 2.");
-            // V1MainCollection testCollection = new V1MainCollection();
-            // testCollection.Add(testList);
-            // testCollection.Add(testArray);
-
-            // var testList2 = new V1DataList("test2", System.DateTime.Now);
-            // testList2.AddDefaults(3, Fdbl.TestComplexF);
-            // // Thread.Sleep(2000);
-            // var testArray2 = new V1DataArray("test3", System.DateTime.Now, 3, 2, 0.3, 0.1, Fdbl.TestComplexF);
-            // // Thread.Sleep(2000);
-            // testCollection.Add(testList2);
-            // testCollection.Add(testArray2);
-            // Console.WriteLine(testCollection.ToLongString("{0:f2}"));
-
-            // Console.WriteLine("------ 3.");
-            // for (int i = 0; i < testCollection.Count; i++)
-            // {
-            //     Console.WriteLine(String.Format("Count: {0:d}", testCollection[i].Count));
-            //     Console.WriteLine(String.Format("Avg: {0:f3}", testCollection[i].AverageValue));
-            // }
-
-            // Console.WriteLine("------ 4.");
-            // Console.WriteLine(testCollection.minTime().ToString());
-
-            // var c = new V1MainCollection();
-            // Console.WriteLine(c.minTime() == null);
-
-            // foreach (var data in (IEnumerable<V1Data>)testCollection)
-            // {
-            //     Console.WriteLine(data.ToString());
-            // }
-
-            // foreach (var data in (IEnumerable<V1Data>)c)
-            // {
-            //     Console.WriteLine(data.ToString());
-            // }
-
-            // var ok = V1DataArray.SaveAsText("test.txt", testArray);
-            // Console.Write(ok);
+            TestSaveAndLoad("test_arr.xml", "test_list.dat");
+            Console.WriteLine("\n.................................\n");
+            TestLINQ();
         }
     }
 }

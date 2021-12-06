@@ -8,13 +8,30 @@ using System.Text.Json.Serialization;
 [Serializable]
 public class Body
 {
+    public string Type { get; set; }
+
+    public DateTime Time { get; set; }
+
     public int nX { get; set; }
 
     public int nY { get; set; }
 
-    public double stepX { get; set; }
+    public double StepX { get; set; }
 
-    public double stepY { get; set; }
+    public double StepY { get; set; }
+
+    public struct JsonComplexNode
+    {
+        public int X { get; set; }
+
+        public int Y { get; set; }
+
+        public double Real { get; set; }
+
+        public double Imaginary { get; set; }
+    }
+
+    public List<JsonComplexNode> ListedMatrix { get; set; }
 }
 
 [Serializable]
@@ -22,7 +39,6 @@ public class V1DataArray : V1Data
 {
     public int nX { get; set; }
     public int nY { get; set; }
-
     public double stepX { get; set; }
     public double stepY { get; set; }
     public Complex[,] matrix { get; set; }
@@ -114,11 +130,27 @@ public class V1DataArray : V1Data
     {
         var body = new Body
         {
+            Type = v1.type,
+            Time = v1.createdAt,
             nX = v1.nX,
             nY = v1.nY,
-            stepX = v1.stepX,
-            stepY = v1.stepY,
+            StepX = v1.stepX,
+            StepY = v1.stepY,
+            ListedMatrix = new List<Body.JsonComplexNode>(),
         };
+
+        for (int i = 0; i < v1.nX; i++)
+            for (int j = 0; j < v1.nY; j++)
+            {
+                body.ListedMatrix.Add(new Body.JsonComplexNode
+                {
+                    X = i,
+                    Y = j,
+                    Real = v1.matrix[i, j].Real,
+                    Imaginary = v1.matrix[i, j].Imaginary,
+                });
+            }
+
         var input = JsonSerializer.Serialize(body);
         try
         {
@@ -138,10 +170,18 @@ public class V1DataArray : V1Data
         {
             var content = File.ReadAllText(filename);
             var body = JsonSerializer.Deserialize<Body>(content);
+            v1.type = body.Type;
+            v1.createdAt = body.Time;
             v1.nX = body.nX;
             v1.nY = body.nY;
-            v1.stepX = body.stepX;
-            v1.stepY = body.stepY;
+            v1.stepX = body.StepX;
+            v1.stepY = body.StepY;
+            v1.matrix = new Complex[v1.nX, v1.nY];
+
+            foreach (var item in body.ListedMatrix)
+            {
+                v1.matrix[item.X, item.Y] = new Complex(item.Real, item.Imaginary);
+            }
         }
         catch (Exception e)
         {

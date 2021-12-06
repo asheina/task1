@@ -7,7 +7,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class V1DataList : V1Data
 {
     public List<DataItem> list { get; }
+
     public override int Count { get { return list.Count; } }
+
     public override double AverageValue
     {
         get
