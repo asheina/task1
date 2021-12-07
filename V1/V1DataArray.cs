@@ -37,11 +37,11 @@ public class Body
 [Serializable]
 public class V1DataArray : V1Data
 {
-    public int nX { get; set; }
-    public int nY { get; set; }
-    public double stepX { get; set; }
-    public double stepY { get; set; }
-    public Complex[,] matrix { get; set; }
+    public int nX { get; private set; }
+    public int nY { get; private set; }
+    public double stepX { get; private set; }
+    public double stepY { get; private set; }
+    public Complex[,] matrix { get; private set; }
     public override int Count { get { return nX * nY; } }
     public override double AverageValue
     {
