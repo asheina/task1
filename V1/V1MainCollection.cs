@@ -58,7 +58,7 @@ public class V1MainCollection : IEnumerable<V1DataList>, IEnumerable<V1Data>
     {
         var query = this._values.Select(item => item as V1DataList).
                                 Where(i => i != null).
-                                OrderBy(item => item.AverageValue);
+                                OrderByDescending(item => item.AverageValue);
 
         return query.GetEnumerator();
     }

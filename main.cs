@@ -107,9 +107,16 @@ namespace Task1
 
         static void Main(string[] args)
         {
-            TestSaveAndLoad("test_arr.xml", "test_list.dat");
-            Console.WriteLine("\n.................................\n");
-            TestLINQ();
+            try
+            {
+                TestSaveAndLoad("test_arr.xml", "test_list.dat");
+                Console.WriteLine("\n.................................\n");
+                TestLINQ();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"handles exception Main: {e.Message}");
+            }
         }
     }
 }
