@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="x64\Debug\MKL.dll" />
+    <None Remove="x64\Debug\MKL.pdb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="x64\Debug\MKL.dll" />
+    <Resource Include="x64\Debug\MKL.pdb" />
+  </ItemGroup>
+
+</Project>
